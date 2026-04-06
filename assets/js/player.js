@@ -203,12 +203,12 @@
     const cd      = $('countdown');
     const btnPlay = $('btnPlay');
 
-    // DEV MODE: bypass time lock
+    // DEV MODE: bypass time lock + played lock
     if (DEV_MODE) {
       notice.className = 'time-notice open';
       text.textContent = '🛠 DEV MODE — Time lock bypassed';
       cd.textContent = '';
-      if (isLoaded && !hasPlayed()) btnPlay.disabled = false;
+      if (isLoaded) btnPlay.disabled = false;
       return;
     }
 
@@ -296,6 +296,14 @@
     const playFill   = $('playFill');
     const playTime   = $('playTime');
 
+    // Cảnh báo khi thoát trang trong lúc đang phát
+    window.onbeforeunload = function (e) {
+      const msg = 'Bài thi đang phát. Nếu thoát bây giờ bạn sẽ KHÔNG thể nghe lại được!';
+      e.preventDefault();
+      e.returnValue = msg;
+      return msg;
+    };
+
     // Stop soundcheck just in case
     $('audioSoundcheck').pause();
     $('scModal').classList.remove('open');
@@ -345,6 +353,7 @@
       isPlaying = false;
       playState.style.display = 'none';
       $('endedState').style.display = 'flex';
+      window.onbeforeunload = null; // Bỏ cảnh báo khi nghe xong
     });
   }
 
@@ -352,8 +361,8 @@
   function init() {
     buildUI();
 
-    // Already played?
-    if (hasPlayed()) {
+    // Already played? (DEV_MODE bypasses this)
+    if (hasPlayed() && !DEV_MODE) {
       $('alreadyPlayed').style.display = 'flex';
       $('loadSection').style.display   = 'none';
       $('timeNotice').style.display    = 'none';
