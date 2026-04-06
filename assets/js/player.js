@@ -16,6 +16,7 @@
   // ── Time Window (edit if needed) ──────────────────────────
   const TIME_START = { h: 18, m: 45 };
   const TIME_END   = { h: 19, m: 5  };
+  const DEV_MODE   = new URLSearchParams(window.location.search).has('dev');
   // ──────────────────────────────────────────────────────────
 
   const SOUNDCHECK_DURATION = 30; // seconds
@@ -195,12 +196,21 @@
 
   // ── Time notice update ────────────────────────────────────
   function updateTimeNotice() {
-    if (isPlaying) return; // don't touch UI while playing
+    if (isPlaying) return;
 
     const notice  = $('timeNotice');
     const text    = $('timeText');
     const cd      = $('countdown');
     const btnPlay = $('btnPlay');
+
+    // DEV MODE: bypass time lock
+    if (DEV_MODE) {
+      notice.className = 'time-notice open';
+      text.textContent = '🛠 DEV MODE — Time lock bypassed';
+      cd.textContent = '';
+      if (isLoaded && !hasPlayed()) btnPlay.disabled = false;
+      return;
+    }
 
     const now = new Date();
     const cur = now.getHours() * 60 + now.getMinutes();
