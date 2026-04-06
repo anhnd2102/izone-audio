@@ -37,17 +37,18 @@
     document.body.innerHTML = `
       <div class="card">
 
-        <!-- Header -->
         <div class="card-header">
-          <div class="brand-logo">
-            <img src="assets/img/logo.png" alt="IZONE" onerror="this.style.display='none'">
+          <div class="brand-row">
+            <img class="brand-logo-img" src="assets/img/logo.png" alt="IZONE" onerror="this.style.display='none'">
             <span class="brand-name">IZONE</span>
           </div>
           <div class="brand-tagline">IELTS CHIẾN LƯỢC</div>
-          <div class="test-title">🎧 ${CONFIG.testName}</div>
+          <div class="test-title-row">
+            <span class="test-icon">🎧</span>
+            <span class="test-name">${CONFIG.testName}</span>
+          </div>
         </div>
 
-        <!-- Body -->
         <div class="card-body">
 
           <!-- Already played -->
@@ -59,7 +60,7 @@
 
           <!-- Load progress -->
           <div class="load-section" id="loadSection">
-            <div class="load-label" id="loadLabel">⏳ Đang tải audio...</div>
+            <div class="load-label" id="loadLabel">Đang tải audio...</div>
             <div class="progress-track">
               <div class="progress-fill" id="loadFill"></div>
             </div>
@@ -78,14 +79,14 @@
             🔊 Thử âm lượng trước khi thi
           </button>
           <button class="btn btn-play" id="btnPlay" disabled>
-            ▶ PHÁT AUDIO THI THẬT
+            ▶&nbsp; Phát audio bài thi
           </button>
 
           <!-- Playing state -->
           <div class="playing-state" id="playingState">
             <div class="playing-badge">
               <div class="dot"></div>
-              ĐANG PHÁT BÀI THI
+              Đang phát bài thi
             </div>
             <div style="width:100%">
               <div class="playing-progress-track">
@@ -105,7 +106,7 @@
 
         </div>
 
-        <div class="card-footer">IZONE · IELTS CHIẾN LƯỢC</div>
+        <div class="card-footer">IZONE &nbsp;·&nbsp; IELTS CHIẾN LƯỢC</div>
       </div>
 
       <!-- Sound Check Modal -->
@@ -116,14 +117,14 @@
           </div>
           <div class="modal-body">
             <p class="modal-desc">
-              Nghe đoạn nhạc bên dưới và điều chỉnh âm lượng thiết bị cho vừa tai,<br>
-              sau đó nhấn <strong>Xác nhận</strong>.
+              Nghe đoạn nhạc và điều chỉnh âm lượng cho vừa tai,<br>
+              sau đó nhấn <strong style="color:#fff">Xác nhận</strong>.
             </p>
             <div class="waveform" id="waveform">
               <div class="bar"></div><div class="bar"></div><div class="bar"></div>
               <div class="bar"></div><div class="bar"></div><div class="bar"></div>
               <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-              <div class="bar"></div>
+              <div class="bar"></div><div class="bar"></div><div class="bar"></div>
             </div>
             <div class="modal-status" id="scStatus">Đang phát 30 giây đầu...</div>
             <div class="modal-actions">

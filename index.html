@@ -6,112 +6,31 @@
   <title>IZONE – Audio Exam</title>
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="icon" href="assets/img/favicon.png">
-  <style>
-    .index-card { max-width: 480px; }
-
-    .test-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .test-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 16px;
-      border: 1.5px solid #e8e8e8;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: border-color 0.2s, background 0.2s;
-    }
-
-    .test-item:hover {
-      border-color: var(--navy);
-      background: #f7f9ff;
-    }
-
-    .test-item-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .test-num {
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      background: var(--navy);
-      color: white;
-      font-family: var(--font-main);
-      font-weight: 700;
-      font-size: 15px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .test-name {
-      font-family: var(--font-main);
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--navy);
-    }
-
-    .test-sub {
-      font-size: 12px;
-      color: #888;
-      margin-top: 2px;
-    }
-
-    .badge {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 3px 9px;
-      border-radius: 99px;
-    }
-
-    .badge-done {
-      background: #e8f5e9;
-      color: var(--success);
-    }
-
-    .badge-pending {
-      background: #f5f5f5;
-      color: #aaa;
-    }
-
-    .arrow { color: #ccc; font-size: 18px; }
-
-    .index-intro {
-      font-size: 13px;
-      color: var(--gray);
-      text-align: center;
-      line-height: 1.6;
-      padding: 4px 0 4px;
-    }
-  </style>
 </head>
 <body>
   <div class="card index-card">
 
     <div class="card-header">
-      <div class="brand-logo">
-        <img src="assets/img/logo.png" alt="IZONE" onerror="this.style.display='none'">
+      <div class="brand-row">
+        <img class="brand-logo-img" src="assets/img/logo.png" alt="IZONE" onerror="this.style.display='none'">
         <span class="brand-name">IZONE</span>
       </div>
       <div class="brand-tagline">IELTS CHIẾN LƯỢC</div>
-      <div class="test-title">📋 Danh sách bài thi</div>
+      <div class="test-title-row">
+        <span class="test-icon">📋</span>
+        <span class="test-name">Danh sách bài thi</span>
+      </div>
     </div>
 
     <div class="card-body">
       <p class="index-intro">
         Chọn bài thi theo hướng dẫn của giáo viên.<br>
-        Mỗi bài chỉ nghe được <strong>1 lần</strong> trong khung giờ quy định.
+        Mỗi bài chỉ nghe được <strong style="color:rgba(255,255,255,0.85)">1 lần</strong> trong khung giờ quy định.
       </p>
-
       <div class="test-list" id="testList"></div>
     </div>
 
-    <div class="card-footer">IZONE · IELTS CHIẾN LƯỢC</div>
+    <div class="card-footer">IZONE &nbsp;·&nbsp; IELTS CHIẾN LƯỢC</div>
   </div>
 
   <script>
@@ -140,10 +59,10 @@
           <div class="test-num">${i + 1}</div>
           <div>
             <div class="test-name">${t.name}</div>
-            <div class="test-sub">IELTS Listening · 18:45 – 19:05</div>
+            <div class="test-sub">IELTS Listening &nbsp;·&nbsp; 18:45 – 19:05</div>
           </div>
         </div>
-        <div style="display:flex;align-items:center;gap:10px">
+        <div class="test-right">
           ${badge}
           <span class="arrow">›</span>
         </div>
