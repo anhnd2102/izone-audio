@@ -5,20 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>IZONE – Audio Exam</title>
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&family=Open+Sans:wght@400;600;700&family=Ubuntu+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/img/favicon.png">
 </head>
 <body>
   <div class="card index-card">
 
     <div class="card-header">
-      <div class="brand-row">
-        <img class="brand-logo-img" src="assets/img/logo.png" alt="IZONE" onerror="this.style.display='none'">
-        <span class="brand-name">IZONE</span>
+      <div class="header-logo" id="headerLogo">
+        <img src="assets/img/logo.png" alt="IZONE"
+          onerror="document.getElementById('headerLogo').classList.add('failed')">
+        <span class="logo-text-fallback">IZONE</span>
       </div>
-      <div class="brand-tagline">IELTS CHIẾN LƯỢC</div>
-      <div class="test-title-row">
-        <span class="test-icon">📋</span>
-        <span class="test-name">Danh sách bài thi</span>
+      <div class="header-divider"></div>
+      <div class="header-info">
+        <div class="header-tagline">IELTS Chiến Lược</div>
+        <div class="header-test-name">Danh sách bài thi</div>
       </div>
     </div>
 

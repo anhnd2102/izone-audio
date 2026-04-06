@@ -38,14 +38,15 @@
       <div class="card">
 
         <div class="card-header">
-          <div class="brand-row">
-            <img class="brand-logo-img" src="assets/img/logo.png" alt="IZONE" onerror="this.style.display='none'">
-            <span class="brand-name">IZONE</span>
+          <div class="header-logo" id="headerLogo">
+            <img src="assets/img/logo.png" alt="IZONE"
+              onerror="document.getElementById('headerLogo').classList.add('failed')">
+            <span class="logo-text-fallback">IZONE</span>
           </div>
-          <div class="brand-tagline">IELTS CHIẾN LƯỢC</div>
-          <div class="test-title-row">
-            <span class="test-icon">🎧</span>
-            <span class="test-name">${CONFIG.testName}</span>
+          <div class="header-divider"></div>
+          <div class="header-info">
+            <div class="header-tagline">IELTS Chiến Lược</div>
+            <div class="header-test-name">${CONFIG.testName}</div>
           </div>
         </div>
 
