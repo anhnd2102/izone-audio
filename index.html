@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IZONE – Audio Exam</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" href="assets/img/favicon.png">
+  <style>
+    .index-card { max-width: 480px; }
+
+    .test-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .test-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border: 1.5px solid #e8e8e8;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .test-item:hover {
+      border-color: var(--navy);
+      background: #f7f9ff;
+    }
+
+    .test-item-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .test-num {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: white;
+      font-family: var(--font-main);
+      font-weight: 700;
+      font-size: 15px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .test-name {
+      font-family: var(--font-main);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    .test-sub {
+      font-size: 12px;
+      color: #888;
+      margin-top: 2px;
+    }
+
+    .badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 99px;
+    }
+
+    .badge-done {
+      background: #e8f5e9;
+      color: var(--success);
+    }
+
+    .badge-pending {
+      background: #f5f5f5;
+      color: #aaa;
+    }
+
+    .arrow { color: #ccc; font-size: 18px; }
+
+    .index-intro {
+      font-size: 13px;
+      color: var(--gray);
+      text-align: center;
+      line-height: 1.6;
+      padding: 4px 0 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card index-card">
+
+    <div class="card-header">
+      <div class="brand-logo">
+        <img src="assets/img/logo.png" alt="IZONE" onerror="this.style.display='none'">
+        <span class="brand-name">IZONE</span>
+      </div>
+      <div class="brand-tagline">IELTS CHIẾN LƯỢC</div>
+      <div class="test-title">📋 Danh sách bài thi</div>
+    </div>
+
+    <div class="card-body">
+      <p class="index-intro">
+        Chọn bài thi theo hướng dẫn của giáo viên.<br>
+        Mỗi bài chỉ nghe được <strong>1 lần</strong> trong khung giờ quy định.
+      </p>
+
+      <div class="test-list" id="testList"></div>
+    </div>
+
+    <div class="card-footer">IZONE · IELTS CHIẾN LƯỢC</div>
+  </div>
+
+  <script>
+    const TESTS = [
+      { id: 'test-1', name: 'Term Test 1', href: 'test-1.html' },
+      { id: 'test-2', name: 'Term Test 2', href: 'test-2.html' },
+      { id: 'test-3', name: 'Term Test 3', href: 'test-3.html' },
+      { id: 'test-4', name: 'Term Test 4', href: 'test-4.html' },
+      { id: 'test-5', name: 'Term Test 5', href: 'test-5.html' },
+      { id: 'test-6', name: 'Term Test 6', href: 'test-6.html' },
+    ];
+
+    const list = document.getElementById('testList');
+
+    TESTS.forEach(function (t, i) {
+      const played = localStorage.getItem('izone_played_' + t.id) === '1';
+      const badge  = played
+        ? '<span class="badge badge-done">✓ Đã nghe</span>'
+        : '<span class="badge badge-pending">Chưa nghe</span>';
+
+      const item = document.createElement('a');
+      item.href = t.href;
+      item.className = 'test-item';
+      item.innerHTML = `
+        <div class="test-item-left">
+          <div class="test-num">${i + 1}</div>
+          <div>
+            <div class="test-name">${t.name}</div>
+            <div class="test-sub">IELTS Listening · 18:45 – 19:05</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          ${badge}
+          <span class="arrow">›</span>
+        </div>
+      `;
+      list.appendChild(item);
+    });
+  </script>
+</body>
+</html>
