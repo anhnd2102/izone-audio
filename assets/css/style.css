@@ -634,6 +634,88 @@ body {
 
 .test-item:hover .arrow { color: var(--navy); }
 
+/* ════════════════════════════════════════
+   PASSWORD GATE (index page)
+════════════════════════════════════════ */
+.gate-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.gate-desc {
+  font-size: 13.5px;
+  color: var(--gray-muted);
+  text-align: center;
+  line-height: 1.75;
+}
+
+.gate-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.gate-field label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gray-muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.gate-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.gate-input {
+  width: 100%;
+  padding: 12px 44px 12px 14px;
+  font-family: var(--f-body);
+  font-size: 14px;
+  color: var(--gray-text);
+  background: var(--white);
+  border: 1.5px solid var(--gray-border);
+  border-radius: var(--r-sm);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.gate-input:focus { border-color: var(--navy); }
+.gate-input.error  { border-color: var(--red); animation: shake 0.35s ease; }
+
+.gate-eye {
+  position: absolute;
+  right: 13px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: var(--gray-muted);
+  font-size: 16px;
+  line-height: 1;
+  transition: color 0.15s;
+}
+.gate-eye:hover { color: var(--navy); }
+
+.gate-error {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--red);
+  min-height: 16px;
+  text-align: center;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-6px); }
+  40%       { transform: translateX(6px); }
+  60%       { transform: translateX(-4px); }
+  80%       { transform: translateX(4px); }
+}
+
 /* ── Responsive ── */
 @media (max-width: 480px) {
   .card-header { padding: 16px 18px 14px; }

@@ -22,22 +22,53 @@
       <div class="header-divider"></div>
       <div class="header-info">
         <div class="header-tagline">IELTS Chiến Lược</div>
-        <div class="header-test-name">Danh sách bài thi</div>
+        <div class="header-test-name" id="headerTitle">Dành cho giáo viên</div>
       </div>
     </div>
 
     <div class="card-body">
-      <p class="index-intro">
-        Chọn bài thi theo hướng dẫn của giáo viên.<br>
-        Mỗi bài chỉ nghe được <strong style="color:rgba(255,255,255,0.85)">1 lần</strong> trong khung giờ quy định.
-      </p>
-      <div class="test-list" id="testList"></div>
+
+      <!-- ── Password Gate ── -->
+      <div id="gateSection" class="gate-section">
+        <p class="gate-desc">
+          Trang này chỉ dành cho <strong style="color:var(--navy)">giáo viên</strong>.<br>
+          Vui lòng nhập mật khẩu để xem danh sách bài thi.
+        </p>
+        <div class="gate-field">
+          <label for="gateInput">Mật khẩu giáo viên</label>
+          <div class="gate-input-wrap">
+            <input id="gateInput" class="gate-input" type="password"
+              placeholder="Nhập mật khẩu..." autocomplete="off"
+              onkeydown="if(event.key==='Enter') submitGate()">
+            <button class="gate-eye" id="eyeBtn" onclick="toggleEye()" title="Hiện/ẩn mật khẩu">👁</button>
+          </div>
+          <div class="gate-error" id="gateError"></div>
+        </div>
+        <button class="btn btn-play" onclick="submitGate()">Đăng nhập</button>
+      </div>
+
+      <!-- ── Test List (hidden until authenticated) ── -->
+      <div id="listSection" style="display:none; flex-direction:column; gap:14px;">
+        <p class="index-intro">
+          Chọn bài thi theo hướng dẫn của giáo viên.<br>
+          Mỗi bài chỉ nghe được <strong style="color:var(--navy)">1 lần</strong> trên mỗi trình duyệt/thiết bị.
+        </p>
+        <div class="test-list" id="testList"></div>
+        <button class="btn btn-outline btn-sm" onclick="logout()" style="margin-top:4px;">
+          Đăng xuất
+        </button>
+      </div>
+
     </div>
 
     <div class="card-footer">IZONE &nbsp;·&nbsp; IELTS CHIẾN LƯỢC</div>
   </div>
 
   <script>
+    // ── Đổi mật khẩu tại đây ──────────────────────────────
+    const GV_PASSWORD = 'izone2026';
+    // ─────────────────────────────────────────────────────
+
     const TESTS = [
       { id: 'test-1', name: 'Test 1 Phase 1', href: '1xjm77.html' },
       { id: 'test-2', name: 'Test 2 Phase 1', href: '666w9y.html' },
@@ -47,32 +78,88 @@
       { id: 'test-6', name: 'Test 1 Phase 2', href: 'oz0zih.html' },
     ];
 
-    const list = document.getElementById('testList');
+    function isAuthed() {
+      return sessionStorage.getItem('izone_gv_auth') === '1';
+    }
 
-    TESTS.forEach(function (t, i) {
-      const played = localStorage.getItem('izone_played_' + t.id) === '1';
-      const badge  = played
-        ? '<span class="badge badge-done">✓ Đã nghe</span>'
-        : '<span class="badge badge-pending">Chưa nghe</span>';
+    function showList() {
+      document.getElementById('gateSection').style.display = 'none';
+      const ls = document.getElementById('listSection');
+      ls.style.display = 'flex';
+      document.getElementById('headerTitle').textContent = 'Danh sách bài thi';
+      renderTests();
+    }
 
-      const item = document.createElement('a');
-      item.href = t.href;
-      item.className = 'test-item';
-      item.innerHTML = `
-        <div class="test-item-left">
-          <div class="test-num">${i + 1}</div>
-          <div>
-            <div class="test-name">${t.name}</div>
-            <div class="test-sub">IELTS Listening &nbsp;·&nbsp; 18:45 – 19:05</div>
+    function renderTests() {
+      const list = document.getElementById('testList');
+      if (list.children.length > 0) return; // already rendered
+      TESTS.forEach(function (t, i) {
+        const played = localStorage.getItem('izone_played_' + t.id) === '1';
+        const badge  = played
+          ? '<span class="badge badge-done">✓ Đã nghe</span>'
+          : '<span class="badge badge-pending">Chưa nghe</span>';
+
+        const item = document.createElement('a');
+        item.href = t.href;
+        item.className = 'test-item';
+        item.innerHTML = `
+          <div class="test-item-left">
+            <div class="test-num">${i + 1}</div>
+            <div>
+              <div class="test-name">${t.name}</div>
+              <div class="test-sub">IELTS Listening &nbsp;·&nbsp; 18:45 – 19:05</div>
+            </div>
           </div>
-        </div>
-        <div class="test-right">
-          ${badge}
-          <span class="arrow">›</span>
-        </div>
-      `;
-      list.appendChild(item);
-    });
+          <div class="test-right">
+            ${badge}
+            <span class="arrow">›</span>
+          </div>
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    function submitGate() {
+      const input = document.getElementById('gateInput');
+      const errEl = document.getElementById('gateError');
+
+      input.classList.remove('error');
+      errEl.textContent = '';
+
+      if (input.value === GV_PASSWORD) {
+        sessionStorage.setItem('izone_gv_auth', '1');
+        showList();
+      } else {
+        input.classList.add('error');
+        errEl.textContent = 'Mật khẩu không đúng. Vui lòng thử lại.';
+        input.value = '';
+        input.focus();
+      }
+    }
+
+    function logout() {
+      sessionStorage.removeItem('izone_gv_auth');
+      location.reload();
+    }
+
+    function toggleEye() {
+      const input = document.getElementById('gateInput');
+      const btn   = document.getElementById('eyeBtn');
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.textContent = '🙈';
+      } else {
+        input.type = 'password';
+        btn.textContent = '👁';
+      }
+    }
+
+    // ── Init ────────────────────────────────────────────
+    if (isAuthed()) {
+      showList();
+    } else {
+      document.getElementById('gateInput').focus();
+    }
   </script>
 </body>
 </html>

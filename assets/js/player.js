@@ -13,9 +13,7 @@
 (function () {
   'use strict';
 
-  // ── Time Window (edit if needed) ──────────────────────────
-  const TIME_START = { h: 18, m: 45 };
-  const TIME_END   = { h: 19, m: 5  };
+  // ── Runtime mode ───────────────────────────────────────────
   const DEV_MODE   = new URLSearchParams(window.location.search).has('dev');
   // ──────────────────────────────────────────────────────────
 
@@ -26,7 +24,6 @@
   let isLoaded           = false;
   let soundcheckDone     = false;
   let isPlaying          = false;
-  let timerInterval      = null;
 
   // ── DOM refs ─────────────────────────────────────────────
   const $ = (id) => document.getElementById(id);
@@ -164,29 +161,6 @@
     xhr.send();
   }
 
-  // ── Time helpers ──────────────────────────────────────────
-  function getMins(t) { return t.h * 60 + t.m; }
-
-  function isInWindow() {
-    const now = new Date();
-    const cur = now.getHours() * 60 + now.getMinutes();
-    return cur >= getMins(TIME_START) && cur < getMins(TIME_END);
-  }
-
-  function getSecondsUntilStart() {
-    const now = new Date();
-    const cur = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
-    const start = getMins(TIME_START) * 60;
-    return start > cur ? start - cur : null;
-  }
-
-  function formatCountdown(secs) {
-    const h = Math.floor(secs / 3600);
-    const m = Math.floor((secs % 3600) / 60);
-    const s = secs % 60;
-    if (h > 0) return `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-    return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  }
 
   function formatTime(secs) {
     const m = Math.floor(secs / 60);
@@ -203,41 +177,18 @@
     const cd      = $('countdown');
     const btnPlay = $('btnPlay');
 
-    // DEV MODE: bypass time lock + played lock
+    notice.className = 'time-notice open';
+
     if (DEV_MODE) {
-      notice.className = 'time-notice open';
-      text.textContent = '🛠 DEV MODE — Time lock bypassed';
-      cd.textContent = '';
-      if (isLoaded) btnPlay.disabled = false;
-      return;
+      text.textContent = '🛠 DEV MODE — Played lock bypassed';
+    } else {
+      text.textContent = '✅ Có thể bắt đầu bài nghe ngay khi tải xong';
     }
 
-    const now = new Date();
-    const cur = now.getHours() * 60 + now.getMinutes();
-    const startM = getMins(TIME_START);
-    const endM   = getMins(TIME_END);
+    cd.textContent = '';
 
-    if (cur < startM) {
-      // Before window
-      notice.className = 'time-notice waiting';
-      text.textContent = `Bài thi mở lúc ${TIME_START.h}:${String(TIME_START.m).padStart(2,'0')}`;
-      const secsLeft = getSecondsUntilStart();
-      cd.textContent = secsLeft !== null ? formatCountdown(secsLeft) : '';
-      if (isLoaded && !hasPlayed()) btnPlay.disabled = true;
-
-    } else if (cur >= startM && cur < endM) {
-      // In window
-      notice.className = 'time-notice open';
-      text.textContent = `✅ Đã đến giờ thi — bài đóng lúc ${TIME_END.h}:${String(TIME_END.m).padStart(2,'0')}`;
-      cd.textContent = '';
-      if (isLoaded && !hasPlayed()) btnPlay.disabled = false;
-
-    } else {
-      // After window
-      notice.className = 'time-notice closed';
-      text.textContent = 'Đã hết giờ thi';
-      cd.textContent = '';
-      if (isLoaded) btnPlay.disabled = true;
+    if (isLoaded) {
+      btnPlay.disabled = false;
     }
   }
 
@@ -371,9 +322,8 @@
       return;
     }
 
-    // Start timer loop
+    // Initialize notice state
     updateTimeNotice();
-    timerInterval = setInterval(updateTimeNotice, 1000);
 
     // Wire up buttons
     $('btnSoundcheck').onclick = openSoundcheck;
